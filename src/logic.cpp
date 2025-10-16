@@ -6,6 +6,7 @@
 #include <vector>
 #include <iterator>
 #include <algorithm>
+#include <set>
 
 float convertToFloat(std::string str)
 {
@@ -22,7 +23,7 @@ std::string removeQuotes(const std::string str)
   return str.substr(1, str.length() - 2);
 }
 
-bool isShipExist(ShipCell ship, std::vector<int> not_allowed_ids)
+bool isShipExist(ShipCell ship, fakeids not_allowed_ids)
 {
   for (int i = 0; i < not_allowed_ids.size(); i++)
   {
@@ -86,11 +87,11 @@ Ships getShipsFromFile(std::fstream &file)
   return result;
 };
 
-std::vector<int> getFakeIDsFromFile(std::fstream &file)
+fakeids getFakeIDsFromFile(std::fstream &file)
 {
   handleFileOpening(file);
 
-  std::vector<int> result;
+  fakeids result;
   std::string line;
   std::string token;
   bool is_init = false;
@@ -120,7 +121,7 @@ std::vector<int> getFakeIDsFromFile(std::fstream &file)
   return result;
 }
 
-void Ships::clearFake(const std::vector<int> &fake_ids)
+void Ships::clearFake(const fakeids &fake_ids)
 {
   ships.erase(
       std::remove_if(
@@ -132,3 +133,15 @@ void Ships::clearFake(const std::vector<int> &fake_ids)
           }),
       ships.end());
 }
+
+bool ShipCell::operator<(ShipCell b) const
+{
+
+  return (speed < b.speed);
+};
+
+void Ships::removeDuplicates()
+{
+  std::set<ShipCell> s(ships.begin(), ships.end());
+  std::cout << s.size() << std::endl;
+};

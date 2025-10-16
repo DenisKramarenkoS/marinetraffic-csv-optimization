@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+using fakeids = std::vector<int>;
+
 struct ShipCell
 {
   int id_track;
@@ -14,6 +16,7 @@ struct ShipCell
   int course;
   int age;
   std::string date_add;
+  bool operator<(ShipCell b) const;
 };
 
 class Ships
@@ -44,12 +47,14 @@ public:
 
   ShipCell &operator[](size_t index) { return ships[index]; };
 
-  void clearFake(const std::vector<int> &fake_ids);
+  void clearFake(const fakeids &fake_ids);
+  void removeDuplicates();
 };
 
 float convertToFloat(std::string str);
 std::string removeQuotes(const std::string str);
-bool isShipExist(ShipCell ship, std::vector<int> not_allowed_ids);
+
+bool isShipExist(ShipCell ship, fakeids not_allowed_ids);
 
 Ships getShipsFromFile(std::fstream &file);
 std::vector<int> getFakeIDsFromFile(std::fstream &file);
